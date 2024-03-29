@@ -22,6 +22,7 @@ static int dispValues(double T, double x0, double v0, double x1, double v1)
     printf("\n%.3lf сек %8.3lf, %4.3lf, %4.3lf, %4.3lf\n", T1, x0, v0, x1, v1);
 
             /* инициализация интервалов вывода */
+            
     printf("Введите значение интервала времени, через который будут выводиться данные (прим. 1 (сек), 0.5 (сек) и тд)\t");
 
     if (!scanf("%lf", &rate))
