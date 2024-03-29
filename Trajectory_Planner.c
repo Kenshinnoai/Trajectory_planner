@@ -16,11 +16,6 @@ static int dispValues(double T, double x0, double v0, double x1, double v1)
     const double a2 = (3 * (x1 - x0) + T * (2 * v0 - v1)) / pow(T, 2);
     const double a3 = (T * (v1 - 3 * v0) - 2 * (x1 - x0)) / pow(T, 3);
 
-            /* первый стандартный вывод для T = 0 */
-
-    printf("время        x0     v0,     x1,     v1\n");
-    printf("\n%.3lf сек %8.3lf, %4.3lf, %4.3lf, %4.3lf\n", T1, x0, v0, x1, v1);
-
             /* инициализация интервалов вывода */
             
     printf("Введите значение интервала времени, через который будут выводиться данные (прим. 1 (сек), 0.5 (сек) и тд)\t");
@@ -29,13 +24,15 @@ static int dispValues(double T, double x0, double v0, double x1, double v1)
         return 1;
 
             /* далее вывод данных по rate секундам */
-
+    
+    printf("время        x0     v0,     x1,     v1\n");
+    
     for (; T1 <= T; T1 += rate)
     {
+        printf("\n%.3lf сек %8.3lf, %4.3lf, %4.3lf, %4.3lf\n", T1, x0, v0, x1, v1);
+        
         x1 = a0 + a1 * T1 + a2 * pow(T1, 2) + a3 * pow(T1, 3);
         v1 = a1 + 2 * a2 * T1 + 3 * a3 * pow(T1, 2);
-
-        printf("\n%.3lf сек %8.3lf, %4.3lf, %4.3lf, %4.3lf\n", T1, x0, v0, x1, v1);
     }
 }
 
