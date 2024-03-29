@@ -2,7 +2,7 @@
 #include <math.h>
 #include <locale.h>
 
-static void dispValues(double T, double x0, double v0, double x1, double v1)
+static int dispValues(double T, double x0, double v0, double x1, double v1)
 {
             /* объявление переменных для дополнения данных */
 
