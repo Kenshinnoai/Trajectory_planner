@@ -9,7 +9,7 @@ struct Spline
     double a0, a1, a2, a3;
 };
 
-static void CoeffCount(struct Spline spl);
+static struct Spline CoeffCount(struct Spline spl);
 
 static void DispValues(struct Spline spl);
 
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 
     /* Подсчёт коэффициентов уравнения */
 
-    CoeffCount(s1);
+    s1 = CoeffCount(s1);
     
     /* Передача аргументов функции для их последующего отображения */
 
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-static void CoeffCount(struct Spline spl)
+static struct Spline CoeffCount(struct Spline spl)
 {
     /* Подсчёт коэффициентов с помощью введённых данных */
 
@@ -59,6 +59,7 @@ static void CoeffCount(struct Spline spl)
     spl.a1 = spl.v0;
     spl.a2 = (3 * (spl.x1 - spl.x0) + spl.DestTime * (2 * spl.v0 - spl.v1)) / pow(spl.DestTime, 2);
     spl.a3 = (spl.DestTime * (spl.v1 - 3 * spl.v0) - 2 * (spl.x1 - spl.x0)) / pow(spl.DestTime, 3);
+    return spl;
 }
 
 static void DispValues(struct Spline spl)
@@ -67,9 +68,9 @@ static void DispValues(struct Spline spl)
 
     printf("время        x0     v0,     x1,     v1\n");
 
-    for (float T = 0; T <= spl.DestTime; T += spl.rate)
+    for (double T = 0; T <= spl.DestTime; T += spl.rate)
     {
-        printf("\n%.3f сек %8.3lf, %4.3lf, %4.3lf, %4.3lf\n", T, spl.x0, spl.v0, spl.x1, spl.v1);
+        printf("\n%.3lf сек %8.3lf, %4.3lf, %4.3lf, %4.3lf\n", T, spl.x0, spl.v0, spl.x1, spl.v1);
 
         spl.x1 = spl.a0 + spl.a1 * T + spl.a2 * pow(T, 2) + spl.a3 * pow(T, 3);
         spl.v1 = spl.a1 + 2 * spl.a2 * T + 3 * spl.a3 * pow(T, 2);
