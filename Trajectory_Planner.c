@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <math.h>
-#include <locale.h>
 #include <stdlib.h>
 
 struct Spline
@@ -16,18 +15,17 @@ static void DispValues(struct Spline spl);
 
 int main(int argc, char* argv[])
 {
-    setlocale(LC_ALL, "Rus");
+    /* Are there enough arguments check */
 
-    /* Проверка на достаточное количество аргументов */
-
-    if (argc < 7)
+    if ((argc < 7) || (argc > 7))
     {
-        printf("Введено недостаточно аргументов\n");
+        printf("Not enough arguments\n");
+        printf("Remember, you have to put 6 values\n");
 
         return 1;
     }
 
-    /* Объявление структуры для хранения введённых значений */
+    /* Initialization of structure to put there entered into main() values */
 
     struct Spline s1;
 
@@ -40,11 +38,7 @@ int main(int argc, char* argv[])
     s1.DestTime = atof(argv[5]);
     s1.rate = atof(argv[6]);
 
-    /* Подсчёт коэффициентов уравнения */
-
     s1 = CoeffCount(s1);
-    
-    /* Передача аргументов функции для их последующего отображения */
 
     DispValues(s1);
 
@@ -53,24 +47,28 @@ int main(int argc, char* argv[])
 
 static struct Spline CoeffCount(struct Spline spl)
 {
-    /* Подсчёт коэффициентов с помощью введённых данных */
-
     spl.a0 = spl.x0;
     spl.a1 = spl.v0;
     spl.a2 = (3 * (spl.x1 - spl.x0) + spl.DestTime * (2 * spl.v0 - spl.v1)) / pow(spl.DestTime, 2);
     spl.a3 = (spl.DestTime * (spl.v1 - 3 * spl.v0) - 2 * (spl.x1 - spl.x0)) / pow(spl.DestTime, 3);
+
     return spl;
 }
 
 static void DispValues(struct Spline spl)
 {
-    /* Далее вывод данных по rate секундам */
+    /* Displaying all arguments every "rate" second */
 
-    printf("время        x0     v0,     x1,     v1\n");
+    printf("time        x0     v0,     x1,     v1\n");
 
     for (double T = 0; T <= spl.DestTime; T += spl.rate)
     {
-        printf("\n%.3lf сек %8.3lf, %4.3lf, %4.3lf, %4.3lf\n", T, spl.x0, spl.v0, spl.x1, spl.v1);
+        printf("\n%.3lf sec %8.3lf, %4.3lf, %4.3lf, %4.3lf\n", T, spl.x0, spl.v0, spl.x1, spl.v1);
+
+        spl.x0 = spl.x1;
+        spl.v0 = spl.v1;
+
+        /* Solving values for x1 and v1 for current second */
 
         spl.x1 = spl.a0 + spl.a1 * T + spl.a2 * pow(T, 2) + spl.a3 * pow(T, 3);
         spl.v1 = spl.a1 + 2 * spl.a2 * T + 3 * spl.a3 * pow(T, 2);
